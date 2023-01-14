@@ -4,7 +4,7 @@ import Header from "./MyComponents/Header";
 import {Todos} from "./MyComponents/Todos";
 import {Footer} from "./MyComponents/Footer";
 import {AddTodo} from "./MyComponents/AddTodo";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 
@@ -16,12 +16,12 @@ function App() {
   }
   else
   {
-    initTodo = JSON.parse(localStorage.getItem("todos"))
+    initTodo = JSON.parse(localStorage.getItem("todos"));
   }
 
 
   // making todos work like an object
- const OnDelete = (todo) =>{
+ const onDelete = (todo) =>{
   console.log("I am ondelete of todo", todo);
 
   //deleting this way won't work in react
@@ -36,7 +36,7 @@ function App() {
 
 
 
- const addTodo=(title, desc)=>{
+  const addTodo = (title, desc)=>{
   console.log("I am adding this todo",title,desc)
 
 
@@ -59,14 +59,18 @@ function App() {
   setTodos([...todos, myTodo]);
   console.log(myTodo);
 
+  localStorage.setItem("todos",JSON.stringify(todos));
  }
 
- const [todos, setTodos] = useState([initTodo]);
- useEffect(()=>{
+
+
+
+
+ 
+
+ const [todos, setTodos] = useState(initTodo);
+  useEffect(()=>{
   localStorage.setItem("todos",JSON.stringify(todos));
-  // return()=>{
-  //   cleanup
-  // }
 },[todos])
 
 
@@ -76,7 +80,7 @@ function App() {
  return (
   <>
  <Header title = "My To-do List" searchBar={false}/>
- <AddTodo/>
+ <AddTodo addTodo={addTodo}/>
  <Todos todos={todos} onDelete={onDelete}/>
  <Footer/>
 
